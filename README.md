@@ -8,7 +8,6 @@
 - PHP 8.1
 - Laravel 10
 - Docker
-- Nodejs 19.7.5 (нужен для сборки фронта, js и стили будут в несобранном виде)
 
 ## Ссылка на репозиторий
 https://github.com/ycunyci1/test-work-shop.git
@@ -28,7 +27,19 @@ docker compose up -d
 ```bash
 docker exec -it shop_app bash
 ```
-4. В контейнере выполните миграции и заполнение базы данных начальными данными
+4. Создаем .env файл
+```bash
+cp .env.example .env
+```
+5. Устанавливаем пакеты
+```bash
+composer install
+```
+6. Устанавливаем ключ app
+```bash
+php artisan key:generate
+```
+7. Выполняем миграции и заполнение базы данных начальными данными
 ```bash
 php artisan migrate --seed
 ```
