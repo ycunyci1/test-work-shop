@@ -21,15 +21,17 @@ class CartServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (!array_key_exists('unique_session', $_COOKIE)) {
-            $id = session()->getId();
-            setcookie('unique_session', $id, 2147483647);
-            $session = Session::query()->where('name', $id)->first();
-            if (!$session) {
-                Session::query()->firstOrCreate(['name' => $id]);
+        view()->composer('layouts.header', function () {
+            if (!array_key_exists('unique_session', $_COOKIE)) {
+                $id = session()->getId();
+                setcookie('unique_session', $id, 2147483647);
+                $session = Session::query()->where('name', $id)->first();
+                if (!$session) {
+                    Session::query()->firstOrCreate(['name' => $id]);
+                }
+            } else {
+                Session::query()->where('name', $_COOKIE['unique_session'] ?? session()->getId())->latest()->first();
             }
-        } else {
-            Session::query()->where('name', $_COOKIE['unique_session'] ?? session()->getId())->latest()->first();
-        }
+        });
     }
 }
